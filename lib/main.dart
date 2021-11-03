@@ -88,32 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: rememberMe,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  rememberMe = value!;
-                                });
-                              },
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(right: 0.0),
-                              child: Text('Remember me'),
-                            ),
-                            Expanded(child: Container()),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text('Forgot Password'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
+                        padding: const EdgeInsets.only(top: 15.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(
@@ -126,17 +101,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                        padding: const EdgeInsets.only(top: 5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text('Forgot Password'),
+                            ),
                             const Padding(
-                              padding: EdgeInsets.only(right: 0.0),
-                              child: Text('Don\'t have an account?'),
+                              padding: EdgeInsets.symmetric(horizontal: 1.0),
+                              child: Text(
+                                '|',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w100,
+                                ),
+                              ),
                             ),
                             TextButton(
                               onPressed: () {},
-                              child: const Text('Get started'),
+                              child: const Text('Create Account'),
                             ),
                           ],
                         ),
