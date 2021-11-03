@@ -35,11 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
         child: Container(
-          color: Colors.white30,
+          color: Colors.grey[100],
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Card(
+                elevation: 0.0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10.0,
@@ -47,30 +48,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       const Padding(
                         padding: EdgeInsets.only(right: 0.0),
                         child: Text(
-                          'Sign in to Cadmium Creators',
+                          'Cadmium Creators',
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w100,
+                            fontSize: 23,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10.0),
                         child: Text(
-                          'Enter your credentials to continue',
+                          'Sign in to your account to continue',
                           style: TextStyle(
-                            fontWeight: FontWeight.w100,
-                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w300,
+                            // color: Colors.grey[500],
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(top: 20.0),
                         child: TextFormField(
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
