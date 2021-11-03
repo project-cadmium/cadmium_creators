@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: fibra-light
+font link: https://www.fontspring.com/fonts/los-andes-type/fibra/fibra-light
+font author: Los Andes Type
+font author site: https://losandestype.myportfolio.com/
+
+
+icon designer: Ema Dimitrova
+icon designer link: /sesisesi
+        
+{"bg":"#50A6D8","icon":"#ffffff","font":"#ffffff","slogan":"#ffffff"}
+      

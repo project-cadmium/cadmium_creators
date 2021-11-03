@@ -2,7 +2,7 @@
     package="tech.c3n7.cadmium_creators.cadmium_creators">
    <application
         android:label="cadmium_creators"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
