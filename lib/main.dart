@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(
                               double.infinity,
-                              45,
+                              40,
                             ), // double.infinity is the width and 30 is the height
                           ),
                           onPressed: () {},

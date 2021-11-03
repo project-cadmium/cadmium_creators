@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.c3n7.cadmium_creators.cadmium_creators">
    <application
-        android:label="cadmium_creators"
+        android:label="Cadmium Creators"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
