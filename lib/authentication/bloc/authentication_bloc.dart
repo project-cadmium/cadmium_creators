@@ -15,7 +15,7 @@ class AuthenticationBloc
     required UserRepository userRepository,
   })  : _authenticationRepository = authenticationRepository,
         _userRepository = userRepository,
-        super(const AuthenticationState.uknown()) {
+        super(const AuthenticationState.unknown()) {
     on<AuthenticationEvent>((event, emit) {
       on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
       on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
@@ -57,7 +57,7 @@ class AuthenticationBloc
             ? AuthenticationState.authenticated(user)
             : const AuthenticationState.unauthenticated());
       default:
-        return emit(const AuthenticationState.uknown());
+        return emit(const AuthenticationState.unknown());
     }
   }
 
