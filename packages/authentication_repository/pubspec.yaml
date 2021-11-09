@@ -1,0 +1,6 @@
+name: authentication_repository
+description: Dart package to manage authentication
+publish_to: none
+
+environment:
+  sdk: ">=2.15.0-178.1.beta <3.0.0"
