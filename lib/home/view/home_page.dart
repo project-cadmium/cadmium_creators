@@ -5,6 +5,10 @@ import 'package:cadmium_creators/authentication/authentication.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
