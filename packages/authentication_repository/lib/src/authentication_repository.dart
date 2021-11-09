@@ -18,11 +18,11 @@ class AuthenticationRepository {
       const Duration(microseconds: 300),
       () => _controller.add(AuthenticationStatus.authenticated),
     );
-
-    void logOut() {
-      _controller.add(AuthenticationStatus.unauthenticated);
-    }
-
-    void dispose() => _controller.close();
   }
+
+  void logOut() {
+    _controller.add(AuthenticationStatus.unauthenticated);
+  }
+
+  void dispose() => _controller.close();
 }
