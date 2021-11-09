@@ -155,23 +155,30 @@ class _LoginButton extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                key: const Key('loginForm_continue_raisedButton'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(
-                    double.infinity,
-                    40,
-                  ), // double.infinity is the width and 30 is the height
-                ),
-                onPressed: state.status.isValidated
-                    ? () {
-                        context.read<LoginBloc>().add(const LoginSubmitted());
-                      }
-                    : null,
-                child: const Text('Sign In'),
-              );
+        return ElevatedButton(
+          key: const Key('loginForm_continue_raisedButton'),
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(
+              double.infinity,
+              40,
+            ), // double.infinity is the width and 30 is the height
+          ),
+          onPressed:
+              !state.status.isSubmissionInProgress && state.status.isValidated
+                  ? () {
+                      context.read<LoginBloc>().add(const LoginSubmitted());
+                    }
+                  : null,
+          child: state.status.isSubmissionInProgress
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                  ),
+                )
+              : const Text('Sign In'),
+        );
       },
     );
   }
