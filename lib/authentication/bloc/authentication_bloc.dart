@@ -16,10 +16,11 @@ class AuthenticationBloc
   })  : _authenticationRepository = authenticationRepository,
         _userRepository = userRepository,
         super(const AuthenticationState.unknown()) {
-    on<AuthenticationEvent>((event, emit) {
-      on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
-      on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
-    });
+    on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
+    on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
+    _authenticationStatusSubscription = _authenticationRepository.status.listen(
+      (status) => add(AuthenticationStatusChanged(status)),
+    );
   }
 
   final AuthenticationRepository _authenticationRepository;
