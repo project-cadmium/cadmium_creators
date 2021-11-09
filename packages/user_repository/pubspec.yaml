@@ -1,9 +1,13 @@
-name: authentication_repository
-description: Dart package to manage authentication
+name: user_repository
+description: Manages the user domain
 publish_to: none
 
 environment:
   sdk: ">=2.15.0-178.1.beta <3.0.0"
+
+dependencies:
+  equatable: ^2.0.3
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_lints: ^1.0.0
