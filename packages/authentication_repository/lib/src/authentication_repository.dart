@@ -4,6 +4,17 @@ import 'package:http/http.dart' as http;
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
+class AuthKey {
+  final String key;
+  AuthKey({required this.key});
+
+  factory AuthKey.fromJson(Map<String, dynamic> json) {
+    return AuthKey(
+      key: json["key"],
+    );
+  }
+}
+
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
 
@@ -22,18 +33,18 @@ class AuthenticationRepository {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'username': 'aberry',
-        'password': 'password',
+        'username': username,
+        'password': password,
       }),
     );
 
-    print(response.statusCode);
-    print(response.body);
-
-    await Future.delayed(
-      const Duration(seconds: 3),
-      () => _controller.add(AuthenticationStatus.authenticated),
-    );
+    if (response.statusCode == 200) {
+      final AuthKey authKey = AuthKey.fromJson(jsonDecode(response.body));
+      _controller.add(AuthenticationStatus.authenticated);
+      print(authKey.key);
+    } else {
+      print("${response.statusCode} ${response.body} ");
+    }
   }
 
   void logOut() {
