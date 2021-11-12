@@ -43,7 +43,7 @@ class AuthenticationRepository {
       _controller.add(AuthenticationStatus.authenticated);
       print(authKey.key);
     } else {
-      print("${response.statusCode} ${response.body} ");
+      throw Exception("${response.statusCode} ${response.body} ");
     }
   }
 
