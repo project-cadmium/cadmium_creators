@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'authentication_event.dart';
@@ -18,8 +19,12 @@ class AuthenticationBloc
         super(const AuthenticationState.unknown()) {
     on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
+    on<AuthenticationKeyChanged>(_onAuthenticationKeyChanged);
     _authenticationStatusSubscription = _authenticationRepository.status.listen(
       (status) => add(AuthenticationStatusChanged(status)),
+    );
+    _authKeySubscription = _authenticationRepository.token.listen(
+      (token) => add(AuthenticationKeyChanged(token)),
     );
   }
 
@@ -29,9 +34,12 @@ class AuthenticationBloc
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
 
+  late StreamSubscription<AuthKey> _authKeySubscription;
+
   @override
   Future<void> close() {
     _authenticationStatusSubscription.cancel();
+    _authKeySubscription.cancel();
     _authenticationRepository.dispose();
     return super.close();
   }
@@ -45,6 +53,13 @@ class AuthenticationBloc
     }
   }
 
+  void _onAuthenticationKeyChanged(
+      AuthenticationKeyChanged event, Emitter<AuthenticationState> emit) {
+    if (event.token.key != AuthKey.empty) {
+      print("authentication_bloc ${event.token.key}");
+    }
+  }
+
   void _onAuthenticationStatusChanged(
     AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
@@ -53,6 +68,7 @@ class AuthenticationBloc
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());
       case AuthenticationStatus.authenticated:
+        debugPrint("getting user");
         final user = await _tryGetUser();
         return emit(user != null
             ? AuthenticationState.authenticated(user)

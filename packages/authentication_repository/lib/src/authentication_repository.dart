@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthKey {
-  final String key;
   AuthKey({required this.key});
+  final String key;
+
+  static const empty = "";
 
   factory AuthKey.fromJson(Map<String, dynamic> json) {
     return AuthKey(
@@ -17,6 +19,7 @@ class AuthKey {
 
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
+  final _authKeyController = StreamController<AuthKey>();
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));
@@ -25,7 +28,12 @@ class AuthenticationRepository {
     yield* _controller.stream;
   }
 
-  Future<String?> logIn(
+  Stream<AuthKey> get token async* {
+    yield AuthKey(key: AuthKey.empty);
+    yield* _authKeyController.stream;
+  }
+
+  Future<void> logIn(
       {required String username, required String password}) async {
     final response = await http.post(
       Uri.parse('http://localhost:8000/api/v1/auth/login/'),
@@ -40,9 +48,8 @@ class AuthenticationRepository {
 
     if (response.statusCode == 200) {
       final AuthKey authKey = AuthKey.fromJson(jsonDecode(response.body));
+      _authKeyController.add(authKey);
       _controller.add(AuthenticationStatus.authenticated);
-      print(authKey.key);
-      return authKey.key;
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }
@@ -52,5 +59,8 @@ class AuthenticationRepository {
     _controller.add(AuthenticationStatus.unauthenticated);
   }
 
-  void dispose() => _controller.close();
+  void dispose() {
+    _controller.close();
+    _authKeyController.close();
+  }
 }

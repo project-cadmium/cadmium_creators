@@ -16,4 +16,13 @@ class AuthenticationStatusChanged extends AuthenticationEvent {
   List<Object> get props => [status];
 }
 
+class AuthenticationKeyChanged extends AuthenticationEvent {
+  const AuthenticationKeyChanged(this.token);
+
+  final AuthKey token;
+
+  @override
+  List<Object> get props => [token];
+}
+
 class AuthenticationLogoutRequested extends AuthenticationEvent {}
