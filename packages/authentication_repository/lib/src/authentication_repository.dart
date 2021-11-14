@@ -25,7 +25,7 @@ class AuthenticationRepository {
     yield* _controller.stream;
   }
 
-  Future<void> logIn(
+  Future<String?> logIn(
       {required String username, required String password}) async {
     final response = await http.post(
       Uri.parse('http://localhost:8000/api/v1/auth/login/'),
@@ -42,6 +42,7 @@ class AuthenticationRepository {
       final AuthKey authKey = AuthKey.fromJson(jsonDecode(response.body));
       _controller.add(AuthenticationStatus.authenticated);
       print(authKey.key);
+      return authKey.key;
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }
