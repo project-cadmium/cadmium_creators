@@ -31,8 +31,7 @@ class AuthenticationBloc
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
 
-  late StreamSubscription<AuthenticationStatus>
-      _authenticationStatusSubscription;
+  late StreamSubscription<AuthStreamData> _authenticationStatusSubscription;
 
   late StreamSubscription<AuthKey> _authKeySubscription;
 
@@ -44,10 +43,9 @@ class AuthenticationBloc
     return super.close();
   }
 
-  Future<User?> _tryGetUser() async {
+  Future<User?> _tryGetUser(String token) async {
     try {
-      // final user = await _userRepository.getUser();
-      const user = User.empty;
+      final user = await _userRepository.getUser(token);
       return user;
     } catch (_) {
       return null;
@@ -65,16 +63,19 @@ class AuthenticationBloc
     AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
   ) async {
-    switch (event.status) {
+    debugPrint("Here ${event.status.status}");
+    switch (event.status.status) {
       case AuthenticationStatus.unauthenticated:
+        debugPrint("unauthed");
         return emit(const AuthenticationState.unauthenticated());
       case AuthenticationStatus.authenticated:
         debugPrint("getting user");
-        final user = await _tryGetUser();
+        final user = await _tryGetUser(event.status.authKey!.key);
         return emit(user != null
             ? AuthenticationState.authenticated(user)
             : const AuthenticationState.unauthenticated());
       default:
+        debugPrint("unknown");
         return emit(const AuthenticationState.unknown());
     }
   }
