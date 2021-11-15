@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cadmium_creators/authentication/authentication.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,21 +12,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Builder(builder: (context) {
+      final User user = context.select(
+        (AuthenticationBloc bloc) => bloc.state.user,
+      );
+      return _scaffold(context, user);
+    });
+  }
+
+  Widget _scaffold(BuildContext context, User user) {
     return Scaffold(
       appBar: AppBar(title: const Text('Home')),
-      drawer: const NavigationDrawer(),
+      drawer: NavigationDrawer(user: user),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Builder(
-              builder: (context) {
-                final userId = context.select(
-                  (AuthenticationBloc bloc) => bloc.state.user.id,
-                );
-                return Text('UserID: $userId');
-              },
-            ),
+            Text("UserID: ${user.id}"),
             ElevatedButton(
               onPressed: () {
                 context
@@ -42,7 +45,8 @@ class HomePage extends StatelessWidget {
 }
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
+  const NavigationDrawer({Key? key, required this.user}) : super(key: key);
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -58,24 +62,24 @@ class NavigationDrawer extends StatelessWidget {
               // mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                CircleAvatar(
+              children: <Widget>[
+                const CircleAvatar(
                   radius: 25.0,
                   backgroundColor: Colors.white,
                   child: Text('AH'),
                 ),
-                Padding(padding: EdgeInsets.only(top: 10.0)),
+                const Padding(padding: EdgeInsets.only(top: 10.0)),
                 Text(
-                  'Drawer Header',
-                  style: TextStyle(
+                  "${user.firstName} ${user.lastName}",
+                  style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  'test@example.com',
-                  style: TextStyle(
+                  user.email,
+                  style: const TextStyle(
                     // fontSize: 20.0,
                     // fontWeight: FontWeight.w500,
                     color: Colors.white,
