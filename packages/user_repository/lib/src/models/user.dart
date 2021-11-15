@@ -9,7 +9,7 @@ class User extends Equatable {
     required this.lastName,
   });
 
-  final String id;
+  final int id;
   final String username;
   final String email;
   final String firstName;
@@ -19,7 +19,7 @@ class User extends Equatable {
   List<Object> get props => [id, username, email, firstName, lastName];
 
   static const empty = User(
-    id: "",
+    id: -1,
     username: "",
     email: "",
     firstName: "",
@@ -28,10 +28,11 @@ class User extends Equatable {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        id: json["pk"],
-        username: json["username"],
-        email: json["email"],
-        firstName: json["first_name"],
-        lastName: json["last_name"]);
+      id: json["pk"],
+      username: json["username"],
+      email: json["email"],
+      firstName: json["first_name"],
+      lastName: json["last_name"],
+    );
   }
 }
