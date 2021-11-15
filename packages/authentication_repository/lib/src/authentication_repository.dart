@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthKey {
-  AuthKey({required this.key});
+  const AuthKey({required this.key});
   final String key;
 
-  static const empty = "";
+  static const empty = AuthKey(key: "empty");
 
   factory AuthKey.fromJson(Map<String, dynamic> json) {
     return AuthKey(
@@ -29,7 +29,7 @@ class AuthenticationRepository {
   }
 
   Stream<AuthKey> get token async* {
-    yield AuthKey(key: AuthKey.empty);
+    yield AuthKey.empty;
     yield* _authKeyController.stream;
   }
 

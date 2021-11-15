@@ -46,7 +46,8 @@ class AuthenticationBloc
 
   Future<User?> _tryGetUser() async {
     try {
-      final user = await _userRepository.getUser();
+      // final user = await _userRepository.getUser();
+      const user = User.empty;
       return user;
     } catch (_) {
       return null;
@@ -55,7 +56,7 @@ class AuthenticationBloc
 
   void _onAuthenticationKeyChanged(
       AuthenticationKeyChanged event, Emitter<AuthenticationState> emit) {
-    if (event.token.key != AuthKey.empty) {
+    if (event.token.key != AuthKey.empty.key) {
       debugPrint("authentication_bloc ${event.token.key}");
     }
   }
