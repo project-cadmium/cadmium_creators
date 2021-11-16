@@ -1,6 +1,7 @@
 import 'package:cadmium_creators/pages/instructor/views/create/bloc/create_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class RegistrationForm extends StatelessWidget {
   const RegistrationForm({Key? key}) : super(key: key);
@@ -51,9 +52,10 @@ class _BiographyInput extends StatelessWidget {
           maxLines: 10,
           onChanged: (value) =>
               context.read<CreateBloc>().add(CreateBiographyChanged(value)),
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
             labelText: 'Biography',
+            errorText: state.biography.invalid ? 'invalid biography' : null,
           ),
         );
       },
