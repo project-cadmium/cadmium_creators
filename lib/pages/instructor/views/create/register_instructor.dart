@@ -1,4 +1,5 @@
 import 'package:cadmium_creators/components/components.dart';
+import 'package:cadmium_creators/pages/instructor/repository/instructor_repository/instructor_repository.dart';
 import 'package:cadmium_creators/pages/instructor/views/create/bloc/create_bloc.dart';
 import 'package:cadmium_creators/pages/instructor/views/create/registration_form.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,9 @@ class RegisterInstructor extends StatelessWidget {
       drawer: NavigationDrawer(user: user),
       body: BlocProvider(
         create: (context) {
-          return CreateBloc();
+          return CreateBloc(instructorRepository: InstructorRepository());
         },
-        child: const RegistrationForm(),
+        child: RegistrationForm(userId: user.id),
       ),
     );
   }

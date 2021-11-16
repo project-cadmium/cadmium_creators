@@ -17,5 +17,10 @@ class CreateBiographyChanged extends CreateEvent {
 }
 
 class CreateSubmitted extends CreateEvent {
-  const CreateSubmitted();
+  const CreateSubmitted(this.userId);
+
+  final int userId;
+
+  @override
+  List<Object> get props => [userId];
 }

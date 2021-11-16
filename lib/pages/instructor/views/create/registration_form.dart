@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 class RegistrationForm extends StatelessWidget {
-  const RegistrationForm({Key? key}) : super(key: key);
+  const RegistrationForm({Key? key, required this.userId}) : super(key: key);
+
+  final int userId;
 
   @override
   Widget build(BuildContext context) {
@@ -12,18 +14,20 @@ class RegistrationForm extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
+        children: [
+          const Text(
             'Enter your biography to register',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w300,
             ),
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          _BiographyInput(),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          _RegisterButton(),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          const _BiographyInput(),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          _RegisterButton(
+            userId: userId,
+          ),
         ],
       ),
     );
@@ -56,7 +60,9 @@ class _BiographyInput extends StatelessWidget {
 }
 
 class _RegisterButton extends StatelessWidget {
-  const _RegisterButton({Key? key}) : super(key: key);
+  const _RegisterButton({Key? key, required this.userId}) : super(key: key);
+
+  final int userId;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +80,7 @@ class _RegisterButton extends StatelessWidget {
           onPressed:
               !state.status.isSubmissionInProgress && state.status.isValidated
                   ? () {
-                      context.read<CreateBloc>().add(const CreateSubmitted());
+                      context.read<CreateBloc>().add(CreateSubmitted(userId));
                     }
                   : null,
           child: state.status.isSubmissionInProgress

@@ -57,6 +57,7 @@ class AuthenticationBloc
       AuthenticationKeyChanged event, Emitter<AuthenticationState> emit) {
     if (event.token.key != AuthKey.empty.key) {
       debugPrint("authentication_bloc ${event.token.key}");
+      emit(AuthenticationState.tokenAdded(event.token));
     }
   }
 
