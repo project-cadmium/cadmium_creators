@@ -10,23 +10,40 @@ class RegistrationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
-            'Enter your biography to register',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w300,
+    return BlocListener<CreateBloc, CreateState>(
+      listener: (context, state) {
+        if (state.status.isSubmissionFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(content: Text('Could not register you.')),
+            );
+        } else if (state.status.isSubmissionSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(content: Text('You are now an instructor!')),
+            );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Enter your biography to register',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+              ),
             ),
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          _BiographyInput(),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          _RegisterButton(),
-        ],
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            _BiographyInput(),
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            _RegisterButton(),
+          ],
+        ),
       ),
     );
   }

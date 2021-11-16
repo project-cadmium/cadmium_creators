@@ -23,7 +23,7 @@ class InstructorRepository {
         'biography': biography,
       }),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       debugPrint('createInstructor success ${response.body}');
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
