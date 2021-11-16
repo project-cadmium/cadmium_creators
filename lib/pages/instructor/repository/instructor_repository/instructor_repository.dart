@@ -7,11 +7,11 @@ import 'models/models.dart';
 class InstructorRepository {
   Instructor? _instructor;
 
-  Future<void> createInstructor(
-    int userId,
-    String biography,
-    String token,
-  ) async {
+  Future<void> createInstructor({
+    required int userId,
+    required String biography,
+    required String token,
+  }) async {
     final response = await http.post(
       Uri.parse('http://localhost:8000/api/v1/instructors/'),
       headers: <String, String>{
@@ -23,7 +23,6 @@ class InstructorRepository {
         'biography': biography,
       }),
     );
-
     if (response.statusCode == 200) {
       debugPrint('createInstructor success ${response.body}');
     } else {

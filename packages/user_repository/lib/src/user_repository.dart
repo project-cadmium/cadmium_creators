@@ -9,7 +9,7 @@ class UserRepository {
   User? _user;
 
   Future<User?> getUser(String token) async {
-    if (_user != null) return _user;
+    // if (_user != null) return _user;
 
     final response = await http.get(
       Uri.parse('http://localhost:8000/api/v1/auth/user/'),
@@ -18,7 +18,8 @@ class UserRepository {
       },
     );
     if (response.statusCode == 200) {
-      return _user = User.fromJson(jsonDecode(response.body));
+      _user = User.fromJson(jsonDecode(response.body));
+      return _user;
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }

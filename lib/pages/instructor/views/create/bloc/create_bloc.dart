@@ -27,11 +27,23 @@ class CreateBloc extends Bloc<CreateEvent, CreateState> {
     ));
   }
 
-  void _onCreateSubmitted(CreateSubmitted event, Emitter<CreateState> emit) {
+  void _onCreateSubmitted(
+      CreateSubmitted event, Emitter<CreateState> emit) async {
     if (state.status.isValidated) {
-      debugPrint("${state.biography.value} ${event.userId} ${event.token}");
+      debugPrint(
+          "_onCreateSubmitted: ${state.biography.value} ${event.userId} ${event.token}");
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      try {
+        await _instructorRepository.createInstructor(
+          userId: event.userId,
+          biography: state.biography.value,
+          token: event.token,
+        );
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } catch (e) {
+        debugPrint("_onCreateSubmitted: ${e.toString()}");
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
     }
   }
 }
