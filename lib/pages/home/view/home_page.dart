@@ -1,3 +1,4 @@
+import 'package:cadmium_creators/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cadmium_creators/authentication/authentication.dart';
@@ -89,9 +90,10 @@ class NavigationDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('Item 1'),
+            title: const Text('Register Instructor'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.pushNamed(context, RegisterInstructor.routeName);
             },
           ),
           ListTile(
