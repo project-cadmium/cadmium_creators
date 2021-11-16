@@ -17,10 +17,11 @@ class CreateBiographyChanged extends CreateEvent {
 }
 
 class CreateSubmitted extends CreateEvent {
-  const CreateSubmitted(this.userId);
+  const CreateSubmitted({required this.userId, required this.token});
 
   final int userId;
+  final String token;
 
   @override
-  List<Object> get props => [userId];
+  List<Object> get props => [userId, token];
 }

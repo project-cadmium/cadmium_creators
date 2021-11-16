@@ -1,12 +1,12 @@
+import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/pages/instructor/views/create/bloc/create_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:user_repository/user_repository.dart';
 
 class RegistrationForm extends StatelessWidget {
-  const RegistrationForm({Key? key, required this.userId}) : super(key: key);
-
-  final int userId;
+  const RegistrationForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,20 +14,18 @@ class RegistrationForm extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
+        children: const [
+          Text(
             'Enter your biography to register',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w300,
             ),
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          const _BiographyInput(),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          _RegisterButton(
-            userId: userId,
-          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          _BiographyInput(),
+          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          _RegisterButton(),
         ],
       ),
     );
@@ -60,9 +58,7 @@ class _BiographyInput extends StatelessWidget {
 }
 
 class _RegisterButton extends StatelessWidget {
-  const _RegisterButton({Key? key, required this.userId}) : super(key: key);
-
-  final int userId;
+  const _RegisterButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +66,12 @@ class _RegisterButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       key: const Key('biographyForm_register_raisedButton'),
       builder: (context, state) {
+        final User user = context.select(
+          (AuthenticationBloc bloc) => bloc.state.user,
+        );
+        final String token = context.select(
+          (AuthenticationBloc bloc) => bloc.state.authKey.key,
+        );
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(
@@ -80,7 +82,12 @@ class _RegisterButton extends StatelessWidget {
           onPressed:
               !state.status.isSubmissionInProgress && state.status.isValidated
                   ? () {
-                      context.read<CreateBloc>().add(CreateSubmitted(userId));
+                      context.read<CreateBloc>().add(
+                            CreateSubmitted(
+                              userId: user.id,
+                              token: token,
+                            ),
+                          );
                     }
                   : null,
           child: state.status.isSubmissionInProgress

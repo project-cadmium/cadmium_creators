@@ -29,7 +29,7 @@ class CreateBloc extends Bloc<CreateEvent, CreateState> {
 
   void _onCreateSubmitted(CreateSubmitted event, Emitter<CreateState> emit) {
     if (state.status.isValidated) {
-      debugPrint("${state.biography.value} ${event.userId}");
+      debugPrint("${state.biography.value} ${event.userId} ${event.token}");
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     }

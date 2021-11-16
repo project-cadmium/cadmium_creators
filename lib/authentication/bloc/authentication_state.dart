@@ -13,11 +13,13 @@ class AuthenticationState extends Equatable {
 
   const AuthenticationState.unknown() : this._();
 
-  const AuthenticationState.authenticated(User user)
-      : this._(status: AuthenticationStatus.authenticated, user: user);
-
-  const AuthenticationState.tokenAdded(AuthKey authKey)
-      : this._(status: AuthenticationStatus.authenticated, authKey: authKey);
+  const AuthenticationState.authenticated(
+      {required User user, required AuthKey authKey})
+      : this._(
+          status: AuthenticationStatus.authenticated,
+          user: user,
+          authKey: authKey,
+        );
 
   const AuthenticationState.unauthenticated()
       : this._(status: AuthenticationStatus.unauthenticated);

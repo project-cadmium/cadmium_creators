@@ -30,7 +30,7 @@ class RegisterInstructor extends StatelessWidget {
         create: (context) {
           return CreateBloc(instructorRepository: InstructorRepository());
         },
-        child: RegistrationForm(userId: user.id),
+        child: const RegistrationForm(),
       ),
     );
   }
