@@ -1,4 +1,6 @@
+import 'package:cadmium_creators/pages/instructor/views/create/bloc/create_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegistrationForm extends StatelessWidget {
   const RegistrationForm({Key? key}) : super(key: key);
@@ -18,14 +20,7 @@ class RegistrationForm extends StatelessWidget {
             ),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          const TextField(
-            minLines: 4,
-            maxLines: 10,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Biography',
-            ),
-          ),
+          const _BiographyInput(),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -39,6 +34,29 @@ class RegistrationForm extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _BiographyInput extends StatelessWidget {
+  const _BiographyInput({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CreateBloc, CreateState>(
+      builder: (context, state) {
+        return TextField(
+          key: const Key('registrationForm_biographyInput_textField'),
+          minLines: 4,
+          maxLines: 10,
+          onChanged: (value) =>
+              context.read<CreateBloc>().add(CreateBiographyChanged(value)),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Biography',
+          ),
+        );
+      },
     );
   }
 }
