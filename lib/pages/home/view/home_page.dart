@@ -11,6 +11,8 @@ class HomePage extends StatelessWidget {
     return MaterialPageRoute<void>(builder: (_) => const HomePage());
   }
 
+  static const routeName = '/';
+
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {

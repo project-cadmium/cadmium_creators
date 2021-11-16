@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RegisterInstructor extends StatelessWidget {
   const RegisterInstructor({Key? key}) : super(key: key);
 
-  static const routeName = "registerInstructor";
+  static const routeName = "/registerInstructor";
 
   @override
   Widget build(BuildContext context) {

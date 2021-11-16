@@ -47,6 +47,13 @@ class NavigationDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            title: const Text('Home'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, HomePage.routeName);
+            },
+          ),
+          ListTile(
             title: const Text('Register Instructor'),
             onTap: () {
               Navigator.pop(context);

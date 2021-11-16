@@ -72,6 +72,7 @@ class _AppViewState extends State<AppView> {
         );
       },
       routes: {
+        HomePage.routeName: (context) => const HomePage(),
         RegisterInstructor.routeName: (context) => const RegisterInstructor(),
       },
       onGenerateRoute: (_) => SplashPage.route(),
