@@ -61,9 +61,10 @@ class NavigationDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Item 2'),
+            title: const Text('Instructor Details'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.pushNamed(context, InstructorDetails.routeName);
             },
           ),
         ],
