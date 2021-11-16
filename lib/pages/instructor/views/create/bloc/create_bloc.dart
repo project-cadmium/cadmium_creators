@@ -8,8 +8,15 @@ part 'create_state.dart';
 
 class CreateBloc extends Bloc<CreateEvent, CreateState> {
   CreateBloc() : super(const CreateState()) {
-    on<CreateEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<CreateBiographyChanged>(_onBiographyChanged);
+  }
+
+  void _onBiographyChanged(
+      CreateBiographyChanged event, Emitter<CreateState> emit) {
+    final biography = Biography.dirty(event.biography);
+    emit(state.copyWith(
+      biography: biography,
+      status: Formz.validate([biography]),
+    ));
   }
 }
