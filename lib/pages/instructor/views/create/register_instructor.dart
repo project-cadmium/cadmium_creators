@@ -1,4 +1,5 @@
 import 'package:cadmium_creators/components/components.dart';
+import 'package:cadmium_creators/pages/instructor/views/create/registration_form.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:cadmium_creators/authentication/authentication.dart';
@@ -21,13 +22,9 @@ class RegisterInstructor extends StatelessWidget {
 
   Widget _scaffold(BuildContext context, User user) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register as Instructor')),
+      appBar: AppBar(title: const Text('Register Instructor')),
       drawer: NavigationDrawer(user: user),
-      body: Container(
-        width: 100,
-        height: 100,
-        color: Colors.blue,
-      ),
+      body: const RegistrationForm(),
     );
   }
 }
