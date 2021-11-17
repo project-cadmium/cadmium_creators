@@ -1,6 +1,7 @@
 import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/components/components.dart';
 import 'package:cadmium_creators/pages/instructor/repository/repository.dart';
+import 'package:cadmium_creators/pages/instructor/views/details/bloc/get_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,18 +23,36 @@ class InstructorDetails extends StatelessWidget {
   }
 
   Widget _scaffold(BuildContext context, User user) {
+    final User user = context.select(
+      (AuthenticationBloc bloc) => bloc.state.user,
+    );
+    final String token = context.select(
+      (AuthenticationBloc bloc) => bloc.state.authKey.key,
+    );
     return Scaffold(
       appBar: AppBar(title: const Text('Instructor Details')),
       drawer: NavigationDrawer(user: user),
-      body: const Padding(
-        padding: EdgeInsets.all(15.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: _DetailsTable(),
+      body: BlocProvider(
+        create: (context) {
+          return GetBloc(instructorRepository: InstructorRepository())
+            ..add(GetInstructorInitial(userId: user.id, token: token));
+        },
+        child: BlocBuilder<GetBloc, GetState>(
+          builder: (context, state) => _bodyWidget(context),
         ),
       ),
     );
   }
+}
+
+Widget _bodyWidget(BuildContext context) {
+  return const Padding(
+    padding: EdgeInsets.all(15.0),
+    child: SizedBox(
+      width: double.infinity,
+      child: _DetailsTable(),
+    ),
+  );
 }
 
 class _DetailsTable extends StatelessWidget {

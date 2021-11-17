@@ -37,7 +37,9 @@ class InstructorRepository {
       },
     );
     if (response.statusCode == 200) {
-      return Instructor.fromJson(jsonDecode(response.body));
+      final Instructor instructor =
+          Instructor.fromJson(jsonDecode(response.body));
+      return instructor;
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }

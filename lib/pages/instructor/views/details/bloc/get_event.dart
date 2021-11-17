@@ -17,7 +17,10 @@ class GetInstructorSuccessful extends GetEvent {
 }
 
 class GetInstructorInitial extends GetEvent {
-  const GetInstructorInitial();
+  const GetInstructorInitial({required this.userId, required this.token});
+
+  final int userId;
+  final String token;
 
   @override
   List<Object> get props => [];
