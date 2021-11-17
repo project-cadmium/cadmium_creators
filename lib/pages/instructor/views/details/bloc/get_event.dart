@@ -16,6 +16,13 @@ class GetInstructorSuccessful extends GetEvent {
   List<Object> get props => [instructor];
 }
 
+class GetInstructorInitial extends GetEvent {
+  const GetInstructorInitial();
+
+  @override
+  List<Object> get props => [];
+}
+
 class GetInstructorUnsuccessful extends GetEvent {
   const GetInstructorUnsuccessful();
 
