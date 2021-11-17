@@ -9,7 +9,7 @@ part 'get_state.dart';
 class GetBloc extends Bloc<GetEvent, GetState> {
   GetBloc({required InstructorRepository instructorRepository})
       : _instructorRepository = instructorRepository,
-        super(const GetState()) {
+        super(const GetState.unknown()) {
     on<GetInstructorInitial>(_onInitialEvent);
     on<GetInstructorSuccessful>(_onGettingSuccessful);
     on<GetInstructorUnsuccessful>(_onGettingUnsuccessful);
@@ -24,6 +24,7 @@ class GetBloc extends Bloc<GetEvent, GetState> {
       final Instructor? instructor = await _instructorRepository.getInstructor(
           userId: event.userId, token: event.token);
       debugPrint("_onInitialEvent $instructor");
+      add(GetInstructorSuccessful(instructor!));
     } catch (e) {
       debugPrint("_onInitialEvent: ${e.toString()}");
       add(const GetInstructorUnsuccessful());
@@ -32,7 +33,7 @@ class GetBloc extends Bloc<GetEvent, GetState> {
 
   void _onGettingSuccessful(
       GetInstructorSuccessful event, Emitter<GetState> emit) {
-    // TODO: Do sth
+    emit(GetState.success(event.instructor));
   }
 
   void _onGettingUnsuccessful(

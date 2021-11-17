@@ -38,32 +38,34 @@ class InstructorDetails extends StatelessWidget {
             ..add(GetInstructorInitial(userId: user.id, token: token));
         },
         child: BlocBuilder<GetBloc, GetState>(
-          builder: (context, state) => _bodyWidget(context),
+          builder: (context, state) {
+            if (state.status == GetStatus.success) {
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: _DetailsTable(
+                    biographyText: state.instructor.biography,
+                  ),
+                ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
     );
   }
 }
 
-Widget _bodyWidget(BuildContext context) {
-  return const Padding(
-    padding: EdgeInsets.all(15.0),
-    child: SizedBox(
-      width: double.infinity,
-      child: _DetailsTable(),
-    ),
-  );
-}
-
 class _DetailsTable extends StatelessWidget {
-  const _DetailsTable({Key? key}) : super(key: key);
+  const _DetailsTable({Key? key, required this.biographyText})
+      : super(key: key);
 
-  // TODO: Remove this
-  final String sampleBiography = """
-  # Hello
-  Welcome to may channel sir *i* **am** said:
-  > A gentleman can be whatever he want to be
-  """;
+  final String biographyText;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +89,7 @@ class _DetailsTable extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Markdown(
-                data: sampleBiography,
+                data: biographyText,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 shrinkWrap: true,
               ),
