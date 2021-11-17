@@ -5,8 +5,6 @@ import 'package:http/http.dart' as http;
 import 'models/models.dart';
 
 class InstructorRepository {
-  Instructor? _instructor;
-
   Future<void> createInstructor({
     required int userId,
     required String biography,
@@ -25,6 +23,21 @@ class InstructorRepository {
     );
     if (response.statusCode == 201) {
       debugPrint('createInstructor success ${response.body}');
+    } else {
+      throw Exception("${response.statusCode} ${response.body} ");
+    }
+  }
+
+  Future<Instructor?> getInstructor(
+      {required int userId, required String token}) async {
+    final response = await http.get(
+      Uri.parse('http://localhost:8000/api/v1/instructors/${userId}/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return Instructor.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }
