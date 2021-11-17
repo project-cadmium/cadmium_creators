@@ -4,6 +4,7 @@ import 'package:cadmium_creators/pages/instructor/repository/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class InstructorDetails extends StatelessWidget {
   const InstructorDetails({Key? key}) : super(key: key);
@@ -38,38 +39,45 @@ class InstructorDetails extends StatelessWidget {
 class _DetailsTable extends StatelessWidget {
   const _DetailsTable({Key? key}) : super(key: key);
 
+  // TODO: Remove this
+  final String sampleBiography = """
+  # Hello
+  Welcome to may channel sir *i* **am** said:
+  > A gentleman can be whatever he want to be
+  """;
+
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        padding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 5),
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               child: Text(
                 "Biography",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  // fontSize: 15,
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(5, 6, 5, 10),
-              child: Text("Hello gentlemen"),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Markdown(
+                data: sampleBiography,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                shrinkWrap: true,
+              ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text('EDIT'),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-                minimumSize: const Size(
-                  30,
-                  30,
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text('EDIT'),
               ),
             ),
           ],
