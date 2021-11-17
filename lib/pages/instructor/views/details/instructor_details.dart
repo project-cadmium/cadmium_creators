@@ -60,8 +60,8 @@ class _DetailsTable extends StatelessWidget {
               child: Text(
                 "Biography",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  // fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
                 ),
               ),
             ),
