@@ -1,5 +1,6 @@
 import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/components/components.dart';
+import 'package:cadmium_creators/pages/instructor/instructor.dart';
 import 'package:cadmium_creators/pages/instructor/repository/repository.dart';
 import 'package:cadmium_creators/pages/instructor/views/details/bloc/get_bloc.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,9 @@ class _DetailsTable extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, UpdateInstructor.routeName);
+                },
                 child: const Text('EDIT'),
               ),
             ),
