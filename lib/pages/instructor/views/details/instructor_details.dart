@@ -101,7 +101,7 @@ class _DetailsTable extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, UpdateInstructor.routeName);
                 },
-                child: const Text('EDIT'),
+                child: const Text('Edit'),
               ),
             ),
           ],
