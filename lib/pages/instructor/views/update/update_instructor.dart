@@ -67,7 +67,24 @@ class _UpdateInstructorBlocBuilder extends StatelessWidget {
         return UpdateBloc(instructorRepository: InstructorRepository())
           ..add(UpdateBiographyChanged(instructor.biography));
       },
-      child: _UpdateInstructorForm(instructor: instructor),
+      child: BlocListener<UpdateBloc, UpdateState>(
+        listener: (context, state) {
+          if (state.status.isSubmissionFailure) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text('Could not save changes.')),
+              );
+          } else if (state.status.isSubmissionSuccess) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text('Changes saved successfully.')),
+              );
+          }
+        },
+        child: _UpdateInstructorForm(instructor: instructor),
+      ),
     );
   }
 }
