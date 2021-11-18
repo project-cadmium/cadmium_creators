@@ -44,4 +44,27 @@ class InstructorRepository {
       throw Exception("${response.statusCode} ${response.body} ");
     }
   }
+
+  Future<void> updateInstructor({
+    required int userId,
+    required String biography,
+    required String token,
+  }) async {
+    final response = await http.put(
+      Uri.parse('http://localhost:8000/api/v1/instructors/$userId/'),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'user_id': userId,
+        'biography': biography,
+      }),
+    );
+    if (response.statusCode == 201) {
+      debugPrint('updateInstructor success ${response.body}');
+    } else {
+      throw Exception("${response.statusCode} ${response.body} ");
+    }
+  }
 }

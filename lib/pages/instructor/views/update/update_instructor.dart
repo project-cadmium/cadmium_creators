@@ -5,6 +5,7 @@ import 'package:cadmium_creators/pages/instructor/views/update/bloc/update_bloc.
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class UpdateInstructor extends StatelessWidget {
   const UpdateInstructor({Key? key}) : super(key: key);
@@ -145,15 +146,45 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(
-          double.minPositive,
-          40,
-        ), // double.infinity is the width and 30 is the height
-      ),
-      onPressed: () {},
-      child: const Text('Save'),
+    return BlocBuilder<UpdateBloc, UpdateState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      key: const Key('biographyForm_register_raisedButton'),
+      builder: (context, state) {
+        final User user = context.select(
+          (AuthenticationBloc bloc) => bloc.state.user,
+        );
+        final String token = context.select(
+          (AuthenticationBloc bloc) => bloc.state.authKey.key,
+        );
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(
+              double.minPositive,
+              40,
+            ), // double.infinity is the width and 30 is the height
+          ),
+          onPressed:
+              !state.status.isSubmissionInProgress && state.status.isValidated
+                  ? () {
+                      context.read<UpdateBloc>().add(
+                            UpdateSubmitted(
+                              userId: user.id,
+                              token: token,
+                            ),
+                          );
+                    }
+                  : null,
+          child: state.status.isSubmissionInProgress
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                  ),
+                )
+              : const Text('Save'),
+        );
+      },
     );
   }
 }
