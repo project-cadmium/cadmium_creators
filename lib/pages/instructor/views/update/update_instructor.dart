@@ -118,6 +118,7 @@ class _UpdateInstructorForm extends StatelessWidget {
   }
 }
 
+// TODO: Split this to it's own page
 class _BiographyInput extends StatefulWidget {
   const _BiographyInput({Key? key, required this.instructor}) : super(key: key);
 
