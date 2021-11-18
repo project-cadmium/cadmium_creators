@@ -31,7 +31,7 @@ class InstructorRepository {
   Future<Instructor?> getInstructor(
       {required int userId, required String token}) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8000/api/v1/instructors/${userId}/'),
+      Uri.parse('http://localhost:8000/api/v1/instructors/$userId/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: 'Token $token',
       },

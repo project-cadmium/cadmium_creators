@@ -1,6 +1,7 @@
 import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/pages/instructor/repository/repository.dart';
 import 'package:cadmium_creators/pages/instructor/views/details/bloc/get_bloc.dart';
+import 'package:cadmium_creators/pages/instructor/views/update/bloc/update_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +37,9 @@ class UpdateInstructor extends StatelessWidget {
           child: BlocBuilder<GetBloc, GetState>(
             builder: (context, state) {
               if (state.status == GetStatus.success) {
-                return const _UpdateInstructorForm();
+                return _UpdateInstructorBlocBuilder(
+                  instructor: state.instructor,
+                );
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -50,44 +53,89 @@ class UpdateInstructor extends StatelessWidget {
   }
 }
 
+class _UpdateInstructorBlocBuilder extends StatelessWidget {
+  const _UpdateInstructorBlocBuilder({Key? key, required this.instructor})
+      : super(key: key);
+
+  final Instructor instructor;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        return UpdateBloc(instructorRepository: InstructorRepository())
+          ..add(UpdateBiographyChanged(instructor.biography));
+      },
+      child: _UpdateInstructorForm(instructor: instructor),
+    );
+  }
+}
+
 class _UpdateInstructorForm extends StatelessWidget {
-  const _UpdateInstructorForm({Key? key}) : super(key: key);
+  const _UpdateInstructorForm({Key? key, required this.instructor})
+      : super(key: key);
+
+  final Instructor instructor;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text(
+      children: [
+        const Text(
           'Your biography',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w300,
           ),
         ),
-        Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-        _BiographyInput(),
-        Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-        _SubmitButton(),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+        _BiographyInput(
+          instructor: instructor,
+        ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+        const _SubmitButton(),
       ],
     );
   }
 }
 
-class _BiographyInput extends StatelessWidget {
-  const _BiographyInput({Key? key}) : super(key: key);
+class _BiographyInput extends StatefulWidget {
+  const _BiographyInput({Key? key, required this.instructor}) : super(key: key);
+
+  final Instructor instructor;
+
+  @override
+  _BiographyInputState createState() => _BiographyInputState();
+}
+
+class _BiographyInputState extends State<_BiographyInput> {
+  late TextEditingController _controller;
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.instructor.biography);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const TextField(
-      key: Key('registrationForm_biographyInput_textField'),
-      minLines: 4,
-      maxLines: 10,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Biography',
-        // errorText: state.biography.invalid ? 'invalid biography' : null,
-      ),
+    return BlocBuilder<UpdateBloc, UpdateState>(
+      buildWhen: (previous, current) => previous.biography != current.biography,
+      builder: (context, state) {
+        return TextField(
+          controller: _controller,
+          key: const Key('registrationForm_biographyInput_textField'),
+          minLines: 4,
+          maxLines: 10,
+          onChanged: (value) =>
+              context.read<UpdateBloc>().add(UpdateBiographyChanged(value)),
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: 'Biography',
+            errorText: state.biography.invalid ? 'invalid biography' : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -105,7 +153,7 @@ class _SubmitButton extends StatelessWidget {
         ), // double.infinity is the width and 30 is the height
       ),
       onPressed: () {},
-      child: const Text('Update'),
+      child: const Text('Save'),
     );
   }
 }
