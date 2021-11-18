@@ -15,15 +15,6 @@ class InstructorDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      final User user = context.select(
-        (AuthenticationBloc bloc) => bloc.state.user,
-      );
-      return _scaffold(context, user);
-    });
-  }
-
-  Widget _scaffold(BuildContext context, User user) {
     final User user = context.select(
       (AuthenticationBloc bloc) => bloc.state.user,
     );
@@ -33,30 +24,36 @@ class InstructorDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Instructor Details')),
       drawer: NavigationDrawer(user: user),
-      body: BlocProvider(
-        create: (context) {
-          return GetBloc(instructorRepository: InstructorRepository())
-            ..add(GetInstructorInitial(userId: user.id, token: token));
-        },
-        child: BlocBuilder<GetBloc, GetState>(
-          builder: (context, state) {
-            if (state.status == GetStatus.success) {
-              return Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: _DetailsTable(
-                    biographyText: state.instructor.biography,
-                  ),
+      body: _scaffoldBody(user, token),
+    );
+  }
+
+  Widget _scaffoldBody(User user, String token) {
+    return BlocProvider(
+      create: (context) {
+        return GetBloc(instructorRepository: InstructorRepository())
+          ..add(GetInstructorInitial(userId: user.id, token: token));
+      },
+      child: BlocBuilder<GetBloc, GetState>(
+        buildWhen: (previous, current) =>
+            previous.instructor != current.instructor,
+        builder: (context, state) {
+          if (state.status == GetStatus.success) {
+            return Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: _DetailsTable(
+                  biographyText: state.instructor.biography,
                 ),
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
@@ -70,6 +67,13 @@ class _DetailsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User user = context.select(
+      (AuthenticationBloc bloc) => bloc.state.user,
+    );
+    final String token = context.select(
+      (AuthenticationBloc bloc) => bloc.state.authKey.key,
+    );
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
@@ -99,7 +103,11 @@ class _DetailsTable extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, UpdateInstructor.routeName);
+                  Navigator.pushNamed(context, UpdateInstructor.routeName)
+                      .then((value) {
+                    context.read<GetBloc>().add(
+                        GetInstructorRefresh(userId: user.id, token: token));
+                  });
                 },
                 child: const Text('Edit'),
               ),

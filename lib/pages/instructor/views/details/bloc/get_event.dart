@@ -26,6 +26,16 @@ class GetInstructorInitial extends GetEvent {
   List<Object> get props => [];
 }
 
+class GetInstructorRefresh extends GetEvent {
+  const GetInstructorRefresh({required this.userId, required this.token});
+
+  final int userId;
+  final String token;
+
+  @override
+  List<Object> get props => [];
+}
+
 class GetInstructorUnsuccessful extends GetEvent {
   const GetInstructorUnsuccessful();
 

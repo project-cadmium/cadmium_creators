@@ -127,7 +127,7 @@ class _BiographyInputState extends State<_BiographyInput> {
           controller: _controller,
           key: const Key('registrationForm_biographyInput_textField'),
           minLines: 4,
-          maxLines: 10,
+          maxLines: 20,
           onChanged: (value) =>
               context.read<UpdateBloc>().add(UpdateBiographyChanged(value)),
           decoration: InputDecoration(

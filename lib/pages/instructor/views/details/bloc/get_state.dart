@@ -23,5 +23,5 @@ class GetState extends Equatable {
   const GetState.error() : this._(status: GetStatus.error);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [status, instructor];
 }

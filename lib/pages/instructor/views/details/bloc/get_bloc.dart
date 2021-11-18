@@ -11,6 +11,7 @@ class GetBloc extends Bloc<GetEvent, GetState> {
       : _instructorRepository = instructorRepository,
         super(const GetState.unknown()) {
     on<GetInstructorInitial>(_onInitialEvent);
+    on<GetInstructorRefresh>(_onRefreshEvent);
     on<GetInstructorSuccessful>(_onGettingSuccessful);
     on<GetInstructorUnsuccessful>(_onGettingUnsuccessful);
   }
@@ -27,6 +28,21 @@ class GetBloc extends Bloc<GetEvent, GetState> {
       add(GetInstructorSuccessful(instructor!));
     } catch (e) {
       debugPrint("_onInitialEvent: ${e.toString()}");
+      add(const GetInstructorUnsuccessful());
+    }
+  }
+
+  void _onRefreshEvent(
+      GetInstructorRefresh event, Emitter<GetState> emit) async {
+    emit(const GetState.unknown());
+    debugPrint("_onRefreshEvent fired");
+    try {
+      final Instructor? instructor = await _instructorRepository.getInstructor(
+          userId: event.userId, token: event.token);
+      debugPrint("_onRefreshEvent $instructor");
+      add(GetInstructorSuccessful(instructor!));
+    } catch (e) {
+      debugPrint("_onRefreshEvent: ${e.toString()}");
       add(const GetInstructorUnsuccessful());
     }
   }
