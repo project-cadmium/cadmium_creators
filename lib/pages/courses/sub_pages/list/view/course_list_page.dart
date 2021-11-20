@@ -28,9 +28,14 @@ class CourseListPage extends StatelessWidget {
 
   Widget _scaffold(User user, String token) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Courses')),
-        drawer: NavigationDrawer(user: user),
-        body: _instructorBlocProvider(user, token));
+      appBar: AppBar(title: const Text('Courses')),
+      drawer: NavigationDrawer(user: user),
+      body: _instructorBlocProvider(user, token),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 
   Widget _instructorBlocProvider(User user, String token) {
