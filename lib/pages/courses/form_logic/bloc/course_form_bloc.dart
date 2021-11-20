@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cadmium_creators/pages/courses/form_logic/form_logic.dart';
 import 'package:cadmium_creators/pages/courses/repository/repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 
 part 'course_form_event.dart';
@@ -14,6 +15,7 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
     on<CourseFormNameChanged>(_onNameChanged);
     on<CourseFormDescriptionChanged>(_onDescriptionChanged);
     on<CourseFormUpdateInitial>(_onUpdateInitialState);
+    on<CourseFormUpdateSubmitted>(_onUpdateSubmitted);
   }
 
   final CourseRepository _courseRepository;
@@ -44,5 +46,27 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
       courseName: name,
       status: Formz.validate([name, description]),
     ));
+  }
+
+  void _onUpdateSubmitted(
+      CourseFormUpdateSubmitted event, Emitter<CourseFormState> emit) async {
+    if (state.status.isValidated) {
+      debugPrint(
+          "\nCourseFormBloc._onUpdateSubmitted: ${event.courseId} ${event.token}");
+      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      try {
+        await _courseRepository.updateCourse(
+          courseId: event.courseId,
+          instructorId: event.courseId,
+          name: state.courseName.value,
+          description: state.courseDescription.value,
+          token: event.token,
+        );
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } catch (e) {
+        debugPrint("\nCourseFormBloc._onUpdateSubmitted:: ${e.toString()}");
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    }
   }
 }

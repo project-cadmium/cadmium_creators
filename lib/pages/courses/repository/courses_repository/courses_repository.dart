@@ -73,7 +73,7 @@ class CourseRepository {
       }),
     );
     if (response.statusCode == 200) {
-      debugPrint('\nCoursesRepository.updateCourse success ${response.body}\n');
+      debugPrint('\nCoursesRepository.updateCourse success ${response.body}');
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }
