@@ -36,4 +36,20 @@ class CourseRepository {
       throw Exception("${response.statusCode} ${response.body} ");
     }
   }
+
+  Future<Course?> getCourse(
+      {required int courseid, required String token}) async {
+    final response = await http.get(
+      Uri.parse('http://localhost:8000/api/v1/courses/$courseid/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final Course course = Course.fromJson(jsonDecode(response.body));
+      return course;
+    } else {
+      throw Exception("${response.statusCode} ${response.body} ");
+    }
+  }
 }
