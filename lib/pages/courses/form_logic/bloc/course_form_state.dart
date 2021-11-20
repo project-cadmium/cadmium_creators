@@ -1,10 +1,28 @@
 part of 'course_form_bloc.dart';
 
-abstract class CourseFormState extends Equatable {
-  const CourseFormState();
-  
-  @override
-  List<Object> get props => [];
-}
+class CourseFormState extends Equatable {
+  const CourseFormState({
+    this.status = FormzStatus.pure,
+    this.courseName = const CourseName.pure(),
+    this.courseDescription = const CourseDescription.pure(),
+  });
 
-class CourseFormInitial extends CourseFormState {}
+  final FormzStatus status;
+  final CourseName courseName;
+  final CourseDescription courseDescription;
+
+  CourseFormState copyWith({
+    FormzStatus? status,
+    CourseName? courseName,
+    CourseDescription? courseDescription,
+  }) {
+    return CourseFormState(
+      status: status ?? this.status,
+      courseName: courseName ?? this.courseName,
+      courseDescription: courseDescription ?? this.courseDescription,
+    );
+  }
+
+  @override
+  List<Object> get props => [status, courseName, courseDescription];
+}
