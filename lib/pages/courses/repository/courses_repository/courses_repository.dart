@@ -52,4 +52,30 @@ class CourseRepository {
       throw Exception("${response.statusCode} ${response.body} ");
     }
   }
+
+  Future<void> updateCourse({
+    required int courseId,
+    required int instructorId,
+    required String name,
+    required String description,
+    required String token,
+  }) async {
+    final response = await http.put(
+      Uri.parse('http://localhost:8000/api/v1/courses/$courseId/'),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'instructor_id': instructorId,
+        'name': name,
+        'description': description,
+      }),
+    );
+    if (response.statusCode == 200) {
+      debugPrint('\nCoursesRepository.updateCourse success ${response.body}\n');
+    } else {
+      throw Exception("${response.statusCode} ${response.body} ");
+    }
+  }
 }
