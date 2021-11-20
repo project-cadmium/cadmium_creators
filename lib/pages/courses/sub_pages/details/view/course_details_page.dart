@@ -9,7 +9,6 @@ class CourseDetailsPage extends StatelessWidget {
 
   static const routeName = '/courseDetails';
 
-  // TODO: Fetch data using bloc to allow refreshing after editing
   @override
   Widget build(BuildContext context) {
     final course = ModalRoute.of(context)!.settings.arguments as Course;
