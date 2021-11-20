@@ -38,9 +38,9 @@ class CourseRepository {
   }
 
   Future<Course?> getCourse(
-      {required int courseid, required String token}) async {
+      {required int courseId, required String token}) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8000/api/v1/courses/$courseid/'),
+      Uri.parse('http://localhost:8000/api/v1/courses/$courseId/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: 'Token $token',
       },
