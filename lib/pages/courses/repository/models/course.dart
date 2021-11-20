@@ -29,7 +29,7 @@ class Course extends Equatable {
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
       id: json["id"],
-      instructorId: json["user_id"],
+      instructorId: json["instructor_id"],
       name: json["name"],
       description: json["description"],
       createdAt: json["created_at"],

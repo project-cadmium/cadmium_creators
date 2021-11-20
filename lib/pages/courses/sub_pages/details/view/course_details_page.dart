@@ -1,5 +1,8 @@
+import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/pages/courses/courses.dart';
+import 'package:cadmium_creators/pages/courses/sub_pages/details/bloc/course_detail_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CourseDetailsPage extends StatelessWidget {
   const CourseDetailsPage({Key? key}) : super(key: key);
@@ -14,6 +17,10 @@ class CourseDetailsPage extends StatelessWidget {
     final courseName = course.name.length < 40
         ? course.name
         : course.name.replaceRange(40, course.name.length, '...');
+
+    final String token = context.select(
+      (AuthenticationBloc bloc) => bloc.state.authKey.key,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -54,16 +61,38 @@ class CourseDetailsPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            child: _DetailsWidget(
-              course: course,
-            ),
-          ),
-        ),
+      body: _scaffoldBody(course, token),
+    );
+  }
+
+  Widget _scaffoldBody(Course course, token) {
+    return BlocProvider(
+      create: (context) {
+        return CourseDetailBloc(courseRepository: CourseRepository())
+          ..add(CourseDetailGetInitial(courseId: course.id, token: token));
+      },
+      child: BlocBuilder<CourseDetailBloc, CourseDetailState>(
+        buildWhen: (previous, current) => previous.course != current.course,
+        builder: (context, state) {
+          if (state.status == CourseDetailGetStatus.success) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              child: Card(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: _DetailsWidget(
+                    course: state.course,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
