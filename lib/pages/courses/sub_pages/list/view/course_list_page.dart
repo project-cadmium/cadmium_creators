@@ -124,7 +124,13 @@ class _CourseListView extends StatelessWidget {
                 iconSize: 20,
                 splashRadius: 20,
                 icon: const Icon(Icons.arrow_forward_ios_rounded),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    CourseDetailsPage.routeName,
+                    arguments: course,
+                  );
+                },
               ),
             ),
           ),
