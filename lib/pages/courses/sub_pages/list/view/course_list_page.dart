@@ -80,13 +80,17 @@ class CourseListPage extends StatelessWidget {
                     courses: state.courses,
                   ),
                   Positioned(
-                    bottom: 1,
-                    right: 1,
+                    bottom: 0,
+                    right: 0,
                     child: FloatingActionButton(
                       child: const Icon(Icons.add),
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, CourseCreatePage.routeName);
+                        Navigator.pushNamed(context, CourseCreatePage.routeName)
+                            .then((value) {
+                          context.read<CourseListBloc>().add(
+                              GetCourseListRefresh(
+                                  instructorId: instructor.id, token: token));
+                        });
                       },
                     ),
                   ),
