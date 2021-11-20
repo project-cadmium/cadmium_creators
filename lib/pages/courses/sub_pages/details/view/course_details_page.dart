@@ -58,7 +58,7 @@ class CourseDetailsPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Card(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: _DetailsWidget(
               course: course,
             ),
@@ -78,26 +78,33 @@ class _DetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           'Course ${course.id}',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              const Text(
-                'Name',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.0),
+                child: Text(
+                  'Name',
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                ),
               ),
               const SizedBox(height: 4),
-              Text(
-                course.name,
-                style: TextStyle(color: Colors.grey[700]),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: Text(
+                  course.name,
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
               ),
               const SizedBox(height: 10),
               const Divider(
@@ -106,14 +113,20 @@ class _DetailsWidget extends StatelessWidget {
                 color: Colors.black54,
               ),
               const SizedBox(height: 7),
-              const Text(
-                'Description',
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.0),
+                child: Text(
+                  'Description',
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                ),
               ),
               const SizedBox(height: 4),
-              Text(
-                course.description,
-                style: TextStyle(color: Colors.grey[700]),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: Text(
+                  course.description,
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
               ),
             ],
           ),
