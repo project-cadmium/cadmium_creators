@@ -5,23 +5,23 @@ enum CourseListGetStatus { unknown, success, error }
 class CourseListState extends Equatable {
   const CourseListState._({
     this.status = CourseListGetStatus.unknown,
-    this.course = Course.empty,
+    this.courses = const [],
   });
 
   final CourseListGetStatus status;
-  final Course course;
+  final List<Course> courses;
 
   const CourseListState.unknown() : this._();
 
-  const CourseListState.success(Course course)
+  const CourseListState.success(List<Course> courses)
       : this._(
           status: CourseListGetStatus.success,
-          course: course,
+          courses: courses,
         );
 
   // TODO: Respond to this in the UI
   const CourseListState.error() : this._(status: CourseListGetStatus.error);
 
   @override
-  List<Object> get props => [status, course];
+  List<Object> get props => [status, courses];
 }

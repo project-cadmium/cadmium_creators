@@ -8,12 +8,12 @@ abstract class CourseListEvent extends Equatable {
 }
 
 class GetCourseListSuccessful extends CourseListEvent {
-  const GetCourseListSuccessful(this.course);
+  const GetCourseListSuccessful(this.courses);
 
-  final Course course;
+  final List<Course> courses;
 
   @override
-  List<Object> get props => [course];
+  List<Object> get props => [courses];
 }
 
 class GetCourseListInitial extends CourseListEvent {
