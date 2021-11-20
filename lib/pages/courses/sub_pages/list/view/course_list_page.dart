@@ -100,19 +100,27 @@ class _CourseListView extends StatelessWidget {
       itemBuilder: (context, index) {
         Course course = courses[index];
         return Card(
-          child: ListTile(
-            title: Text(course.name),
-            // neat trick from stackoverflow
-            // https://stackoverflow.com/a/60929451/7450617
-            subtitle: Text(course.description.length < 45
-                ? course.description
-                : course.description
-                    .replaceRange(45, course.description.length, '...')),
-            trailing: IconButton(
-              iconSize: 20,
-              splashRadius: 20,
-              icon: const Icon(Icons.arrow_forward_ios_rounded),
-              onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 20.0,
+                backgroundColor: Colors.blue[100],
+                child: Text('${course.name[0]}${course.name[1]}'.toUpperCase()),
+              ),
+              title: Text(course.name),
+              // neat trick from stackoverflow
+              // https://stackoverflow.com/a/60929451/7450617
+              subtitle: Text(course.description.length < 45
+                  ? course.description
+                  : course.description
+                      .replaceRange(45, course.description.length, '...')),
+              trailing: IconButton(
+                iconSize: 20,
+                splashRadius: 20,
+                icon: const Icon(Icons.arrow_forward_ios_rounded),
+                onPressed: () {},
+              ),
             ),
           ),
         );
