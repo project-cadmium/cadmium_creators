@@ -1,5 +1,8 @@
+import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/pages/courses/repository/repository.dart';
+import 'package:cadmium_creators/pages/courses/sub_pages/details/bloc/course_detail_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CourseUpdatePage extends StatelessWidget {
   const CourseUpdatePage({Key? key}) : super(key: key);
@@ -9,16 +12,31 @@ class CourseUpdatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final course = ModalRoute.of(context)!.settings.arguments as Course;
+    final String token = context.select(
+      (AuthenticationBloc bloc) => bloc.state.authKey.key,
+    );
 
     return Scaffold(
       appBar: AppBar(title: const Text("Update Course")),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
         child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: _CourseUpdateForm(course: course),
-          ),
+          child: BlocProvider(create: (context) {
+            return CourseDetailBloc(courseRepository: CourseRepository())
+              ..add(CourseDetailGetInitial(courseId: course.id, token: token));
+          }, child: BlocBuilder<CourseDetailBloc, CourseDetailState>(
+              builder: (context, state) {
+            if (state.status == CourseDetailGetStatus.success) {
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: _CourseUpdateForm(course: state.course),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          })),
         ),
       ),
     );
