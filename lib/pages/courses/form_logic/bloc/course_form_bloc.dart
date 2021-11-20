@@ -14,6 +14,7 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
         super(const CourseFormState()) {
     on<CourseFormNameChanged>(_onNameChanged);
     on<CourseFormDescriptionChanged>(_onDescriptionChanged);
+    on<CourseFormCreateSubmitted>(_onCreateSubmitted);
     on<CourseFormUpdateInitial>(_onUpdateInitialState);
     on<CourseFormUpdateSubmitted>(_onUpdateSubmitted);
   }
@@ -25,7 +26,7 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
     final name = CourseName.dirty(event.name);
     emit(state.copyWith(
       courseName: name,
-      status: Formz.validate([name]),
+      status: Formz.validate([name, state.courseDescription]),
     ));
   }
 
@@ -34,8 +35,29 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
     final description = CourseDescription.dirty(event.description);
     emit(state.copyWith(
       courseDescription: description,
-      status: Formz.validate([description]),
+      status: Formz.validate([description, state.courseName]),
     ));
+  }
+
+  void _onCreateSubmitted(
+      CourseFormCreateSubmitted event, Emitter<CourseFormState> emit) async {
+    if (state.status.isValidated) {
+      debugPrint(
+          "\nCourseFormBloc._onUpdateSubmitted: ${event.instructorId} ${event.token}");
+      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      try {
+        await _courseRepository.createCourse(
+          instructorId: event.instructorId,
+          name: state.courseName.value,
+          description: state.courseDescription.value,
+          token: event.token,
+        );
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } catch (e) {
+        debugPrint("\nCourseFormBloc._onUpdateSubmitted:: ${e.toString()}");
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    }
   }
 
   void _onUpdateInitialState(

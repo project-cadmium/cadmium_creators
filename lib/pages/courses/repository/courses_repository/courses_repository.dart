@@ -19,6 +19,7 @@ class CourseRepository {
       // debugPrint("getCourses ${response.body}");
       final List<dynamic> courseMapList = jsonDecode(response.body);
 
+      // TODO: Check if an empty list causes issues in the UI
       List<Course> courseList = [];
       for (Map<String, dynamic> course in courseMapList) {
         courseList.add(Course(
