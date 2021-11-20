@@ -31,12 +31,6 @@ class CourseListPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Courses')),
       drawer: NavigationDrawer(user: user),
       body: _instructorBlocProvider(user, token),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, CourseCreatePage.routeName);
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -80,8 +74,23 @@ class CourseListPage extends StatelessWidget {
           if (state.status == CourseListGetStatus.success) {
             return SizedBox(
               width: double.infinity,
-              child: _CourseListView(
-                courses: state.courses,
+              child: Stack(
+                children: [
+                  _CourseListView(
+                    courses: state.courses,
+                  ),
+                  Positioned(
+                    bottom: 1,
+                    right: 1,
+                    child: FloatingActionButton(
+                      child: const Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, CourseCreatePage.routeName);
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           } else {
