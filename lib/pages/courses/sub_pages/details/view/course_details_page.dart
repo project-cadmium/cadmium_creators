@@ -3,6 +3,7 @@ import 'package:cadmium_creators/pages/courses/courses.dart';
 import 'package:cadmium_creators/pages/courses/sub_pages/details/bloc/course_detail_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class CourseDetailsPage extends StatelessWidget {
   const CourseDetailsPage({Key? key}) : super(key: key);
@@ -130,12 +131,27 @@ class _DetailsWidget extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 7),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: Text(
-                  course.name,
-                  style: TextStyle(color: Colors.grey[700]),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        width: 2,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Text(
+                      course.name,
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -152,12 +168,27 @@ class _DetailsWidget extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 7),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: Text(
-                  course.description,
-                  style: TextStyle(color: Colors.grey[700]),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        width: 2,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 0.0, vertical: 5),
+                    child: Markdown(
+                      data: course.description,
+                      shrinkWrap: true,
+                    ),
+                  ),
                 ),
               ),
             ],
