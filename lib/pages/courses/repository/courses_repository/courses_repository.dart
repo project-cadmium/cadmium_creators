@@ -53,6 +53,31 @@ class CourseRepository {
     }
   }
 
+  Future<void> createCourse({
+    required int instructorId,
+    required String name,
+    required String description,
+    required String token,
+  }) async {
+    final response = await http.post(
+      Uri.parse('http://localhost:8000/api/v1/courses/'),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'instructor_id': instructorId,
+        'name': name,
+        'description': description,
+      }),
+    );
+    if (response.statusCode == 201) {
+      debugPrint('\nCoursesRepository.createCourse success ${response.body}');
+    } else {
+      throw Exception("${response.statusCode} ${response.body} ");
+    }
+  }
+
   Future<void> updateCourse({
     required int courseId,
     required int instructorId,
