@@ -104,6 +104,10 @@ class _DetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String token = context.select(
+      (AuthenticationBloc bloc) => bloc.state.authKey.key,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -166,7 +170,10 @@ class _DetailsWidget extends StatelessWidget {
               context,
               CourseUpdatePage.routeName,
               arguments: course,
-            );
+            ).then((value) {
+              context.read<CourseDetailBloc>().add(
+                  CourseDetailGetRefresh(courseId: course.id, token: token));
+            });
           },
           child: const Text('Edit'),
         ),
