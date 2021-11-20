@@ -136,8 +136,9 @@ class _CourseListView extends StatelessWidget {
               // neat trick from stackoverflow
               // https://stackoverflow.com/a/60929451/7450617
               subtitle: Text(course.description.length < 45
-                  ? course.description
+                  ? course.description.replaceAll('\n', ' ')
                   : course.description
+                      .replaceAll('\n', ' ')
                       .replaceRange(45, course.description.length, '...')),
               trailing: IconButton(
                 iconSize: 20,
