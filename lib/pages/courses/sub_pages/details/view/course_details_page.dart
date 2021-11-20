@@ -160,7 +160,16 @@ class _DetailsWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 15),
-        ElevatedButton(onPressed: () {}, child: const Text('Edit')),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              CourseUpdatePage.routeName,
+              arguments: course,
+            );
+          },
+          child: const Text('Edit'),
+        ),
       ],
     );
   }
