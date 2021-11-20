@@ -12,12 +12,12 @@ class CourseUpdatePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Update Course")),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
         child: Card(
           child: Padding(
-            padding: EdgeInsets.all(10),
-            child: _CourseUpdateForm(),
+            padding: const EdgeInsets.all(10),
+            child: _CourseUpdateForm(course: course),
           ),
         ),
       ),
@@ -26,34 +26,59 @@ class CourseUpdatePage extends StatelessWidget {
 }
 
 class _CourseUpdateForm extends StatelessWidget {
-  const _CourseUpdateForm({Key? key}) : super(key: key);
+  const _CourseUpdateForm({Key? key, required this.course}) : super(key: key);
+
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        TextField(
+      children: [
+        const TextField(
           key: Key('courseUpdateFrom_nameInput_textField'),
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Name',
           ),
         ),
-        SizedBox(height: 10),
-        TextField(
-          key: Key('courseUpdateFrom_descriptionInput_textField'),
-          minLines: 4,
-          maxLines: 20,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Description',
-          ),
-        ),
-        SizedBox(height: 10),
-        _SubmitButtton(),
+        const SizedBox(height: 10),
+        _DescriptionInput(description: course.description),
+        const SizedBox(height: 10),
+        const _SubmitButtton(),
       ],
+    );
+  }
+}
+
+class _DescriptionInput extends StatefulWidget {
+  const _DescriptionInput({Key? key, required this.description})
+      : super(key: key);
+  final String description;
+  @override
+  _DescriptionInputState createState() => _DescriptionInputState();
+}
+
+class _DescriptionInputState extends State<_DescriptionInput> {
+  late TextEditingController _controller;
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.description);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      key: const Key('courseUpdateFrom_descriptionInput_textField'),
+      minLines: 4,
+      maxLines: 20,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Description',
+      ),
     );
   }
 }
