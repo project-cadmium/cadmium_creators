@@ -41,9 +41,10 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
   void _onUpdateInitialState(
       CourseFormUpdateInitial event, Emitter<CourseFormState> emit) {
     final name = CourseName.dirty(event.name);
-    final description = CourseName.dirty(event.description);
+    final description = CourseDescription.dirty(event.description);
     emit(state.copyWith(
       courseName: name,
+      courseDescription: description,
       status: Formz.validate([name, description]),
     ));
   }
