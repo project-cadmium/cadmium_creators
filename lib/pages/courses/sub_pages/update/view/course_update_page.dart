@@ -29,16 +29,52 @@ class CourseUpdatePage extends StatelessWidget {
           }, child: BlocBuilder<CourseDetailBloc, CourseDetailState>(
               builder: (context, state) {
             if (state.status == CourseDetailGetStatus.success) {
-              return Padding(
-                padding: const EdgeInsets.all(10),
-                child: _CourseUpdateForm(course: state.course),
-              );
+              return _CourseUpdateBlocBuilder(course: state.course);
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
           })),
+        ),
+      ),
+    );
+  }
+}
+
+class _CourseUpdateBlocBuilder extends StatelessWidget {
+  const _CourseUpdateBlocBuilder({Key? key, required this.course})
+      : super(key: key);
+
+  final Course course;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        return CourseFormBloc(courseRepository: CourseRepository())
+          ..add(CourseFormUpdateInitial(
+              name: course.name, description: course.description));
+      },
+      child: BlocListener<CourseFormBloc, CourseFormState>(
+        listener: (context, state) {
+          if (state.status.isSubmissionFailure) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text('Could not save changes.')),
+              );
+          } else if (state.status.isSubmissionSuccess) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text('Changes saved successfully.')),
+              );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: _CourseUpdateForm(course: course),
         ),
       ),
     );
@@ -130,8 +166,9 @@ class _DescriptionInputState extends State<_DescriptionInput> {
           key: const Key('courseUpdateFrom_descriptionInput_textField'),
           minLines: 4,
           maxLines: 20,
-          onChanged: (value) =>
-              context.read<CourseFormBloc>().add(CourseFormNameChanged(value)),
+          onChanged: (value) => context
+              .read<CourseFormBloc>()
+              .add(CourseFormDescriptionChanged(value)),
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             labelText: 'Description',

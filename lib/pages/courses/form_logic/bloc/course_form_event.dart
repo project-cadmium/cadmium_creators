@@ -36,6 +36,17 @@ class CourseFormCreateSubmitted extends CourseFormEvent {
   List<Object> get props => [courseId, token];
 }
 
+class CourseFormUpdateInitial extends CourseFormEvent {
+  const CourseFormUpdateInitial(
+      {required this.name, required this.description});
+
+  final String name;
+  final String description;
+
+  @override
+  List<Object> get props => [name, description];
+}
+
 class CourseFormUpdateSubmitted extends CourseFormEvent {
   const CourseFormUpdateSubmitted(
       {required this.courseId, required this.token});

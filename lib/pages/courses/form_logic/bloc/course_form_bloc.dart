@@ -13,6 +13,7 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
         super(const CourseFormState()) {
     on<CourseFormNameChanged>(_onNameChanged);
     on<CourseFormDescriptionChanged>(_onDescriptionChanged);
+    on<CourseFormUpdateInitial>(_onUpdateInitialState);
   }
 
   final CourseRepository _courseRepository;
@@ -32,6 +33,16 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
     emit(state.copyWith(
       courseDescription: description,
       status: Formz.validate([description]),
+    ));
+  }
+
+  void _onUpdateInitialState(
+      CourseFormUpdateInitial event, Emitter<CourseFormState> emit) {
+    final name = CourseName.dirty(event.name);
+    final description = CourseName.dirty(event.description);
+    emit(state.copyWith(
+      courseName: name,
+      status: Formz.validate([name, description]),
     ));
   }
 }
