@@ -47,9 +47,10 @@ class CourseCreatePage extends StatelessWidget {
         builder: (context, state) {
           if (state.status == GetStatus.success) {
             return Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                width: double.infinity,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 15),
+              child: Card(
+                // width: double.infinity,
                 child: _CourseCreateBlocBuilder(
                   instructorId: state.instructor.id,
                 ),
