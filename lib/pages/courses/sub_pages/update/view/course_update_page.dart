@@ -36,18 +36,40 @@ class _CourseUpdateForm extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const TextField(
-          key: Key('courseUpdateFrom_nameInput_textField'),
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Name',
-          ),
-        ),
+        _NameInput(name: course.name),
         const SizedBox(height: 10),
         _DescriptionInput(description: course.description),
         const SizedBox(height: 10),
         const _SubmitButtton(),
       ],
+    );
+  }
+}
+
+class _NameInput extends StatefulWidget {
+  const _NameInput({Key? key, required this.name}) : super(key: key);
+  final String name;
+  @override
+  _NameInputState createState() => _NameInputState();
+}
+
+class _NameInputState extends State<_NameInput> {
+  late TextEditingController _controller;
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.name);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      key: const Key('courseUpdateFrom_nameInput_textField'),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Name',
+      ),
     );
   }
 }
