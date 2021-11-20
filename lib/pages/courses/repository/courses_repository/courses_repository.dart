@@ -18,7 +18,7 @@ class CourseRepository {
     if (response.statusCode == 200) {
       debugPrint("getCourses ${response.body}");
       final List<dynamic> courseMapList = jsonDecode(response.body);
-      debugPrint("getCourses $courseMapList");
+
       List<Course> courseList = [];
       for (Map<String, dynamic> course in courseMapList) {
         courseList.add(Course(
@@ -30,7 +30,7 @@ class CourseRepository {
           updatedAt: course['updated_at'],
         ));
       }
-      debugPrint("getCourses $courseList");
+
       return courseList;
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
