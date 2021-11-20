@@ -62,32 +62,49 @@ class CourseListPage extends StatelessWidget {
 
   Widget _courselistBlocProvider(Instructor instructor, String token) {
     return BlocProvider(
-        create: (context) {
-          return CourseListBloc(courseRepository: CourseRepository())
-            ..add(GetCourseListInitial(
-                instructorId: instructor.id, token: token));
-        },
-        child: BlocBuilder<CourseListBloc, CourseListState>(
-          buildWhen: (previous, current) => previous.courses != current.courses,
-          builder: (context, state) {
-            if (state.status == CourseListGetStatus.success) {
-              return Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.blue,
-                  ),
+      create: (context) {
+        return CourseListBloc(courseRepository: CourseRepository())
+          ..add(
+              GetCourseListInitial(instructorId: instructor.id, token: token));
+      },
+      child: BlocBuilder<CourseListBloc, CourseListState>(
+        buildWhen: (previous, current) => previous.courses != current.courses,
+        builder: (context, state) {
+          if (state.status == CourseListGetStatus.success) {
+            return Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: _CourseListView(
+                  courses: state.courses,
                 ),
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.green),
-              );
-            }
-          },
-        ));
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.green),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class _CourseListView extends StatelessWidget {
+  const _CourseListView({Key? key, required this.courses}) : super(key: key);
+
+  final List<Course> courses;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: courses.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(courses[index].name),
+        );
+      },
+    );
   }
 }
