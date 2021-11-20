@@ -27,13 +27,13 @@ class CourseFormDescriptionChanged extends CourseFormEvent {
 
 class CourseFormCreateSubmitted extends CourseFormEvent {
   const CourseFormCreateSubmitted(
-      {required this.courseId, required this.token});
+      {required this.instructorId, required this.token});
 
-  final int courseId;
+  final int instructorId;
   final String token;
 
   @override
-  List<Object> get props => [courseId, token];
+  List<Object> get props => [instructorId, token];
 }
 
 class CourseFormUpdateInitial extends CourseFormEvent {

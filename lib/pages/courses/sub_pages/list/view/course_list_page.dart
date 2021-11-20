@@ -22,11 +22,11 @@ class CourseListPage extends StatelessWidget {
       final String token = context.select(
         (AuthenticationBloc bloc) => bloc.state.authKey.key,
       );
-      return _scaffold(context, user, token);
+      return _scaffold(user, token);
     });
   }
 
-  Widget _scaffold(BuildContext context, User user, String token) {
+  Widget _scaffold(User user, String token) {
     return Scaffold(
       appBar: AppBar(title: const Text('Courses')),
       drawer: NavigationDrawer(user: user),
