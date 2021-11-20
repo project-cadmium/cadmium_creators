@@ -1,8 +1,10 @@
 import 'package:cadmium_creators/authentication/authentication.dart';
+import 'package:cadmium_creators/pages/courses/form_logic/form_logic.dart';
 import 'package:cadmium_creators/pages/courses/repository/repository.dart';
 import 'package:cadmium_creators/pages/courses/sub_pages/details/bloc/course_detail_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class CourseUpdatePage extends StatelessWidget {
   const CourseUpdatePage({Key? key}) : super(key: key);
@@ -58,7 +60,7 @@ class _CourseUpdateForm extends StatelessWidget {
         const SizedBox(height: 10),
         _DescriptionInput(description: course.description),
         const SizedBox(height: 10),
-        const _SubmitButtton(),
+        _SubmitButton(courseId: course.id),
       ],
     );
   }
@@ -81,13 +83,22 @@ class _NameInputState extends State<_NameInput> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      key: const Key('courseUpdateFrom_nameInput_textField'),
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Name',
-      ),
+    return BlocBuilder<CourseFormBloc, CourseFormState>(
+      buildWhen: (previous, current) =>
+          previous.courseName != current.courseName,
+      builder: (context, state) {
+        return TextField(
+          controller: _controller,
+          key: const Key('courseUpdateFrom_nameInput_textField'),
+          onChanged: (value) =>
+              context.read<CourseFormBloc>().add(CourseFormNameChanged(value)),
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: 'Name',
+            errorText: state.courseName.invalid ? 'invalid name' : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -110,33 +121,71 @@ class _DescriptionInputState extends State<_DescriptionInput> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      key: const Key('courseUpdateFrom_descriptionInput_textField'),
-      minLines: 4,
-      maxLines: 20,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Description',
-      ),
+    return BlocBuilder<CourseFormBloc, CourseFormState>(
+      buildWhen: (previous, current) =>
+          previous.courseDescription != current.courseDescription,
+      builder: (context, state) {
+        return TextField(
+          controller: _controller,
+          key: const Key('courseUpdateFrom_descriptionInput_textField'),
+          minLines: 4,
+          maxLines: 20,
+          onChanged: (value) =>
+              context.read<CourseFormBloc>().add(CourseFormNameChanged(value)),
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: 'Description',
+            errorText:
+                state.courseDescription.invalid ? 'invalid description' : null,
+          ),
+        );
+      },
     );
   }
 }
 
-class _SubmitButtton extends StatelessWidget {
-  const _SubmitButtton({Key? key}) : super(key: key);
+class _SubmitButton extends StatelessWidget {
+  const _SubmitButton({Key? key, required this.courseId}) : super(key: key);
+  final int courseId;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(
-          double.minPositive,
-          40,
-        ), // double.infinity is the width and 30 is the height
-      ),
-      onPressed: () {},
-      child: const Text("Save"),
+    return BlocBuilder<CourseFormBloc, CourseFormState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      key: const Key('courseUpdateForm_register_raisedButton'),
+      builder: (context, state) {
+        final String token = context.select(
+          (AuthenticationBloc bloc) => bloc.state.authKey.key,
+        );
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(
+              double.minPositive,
+              40,
+            ), // double.infinity is the width and 30 is the height
+          ),
+          onPressed:
+              !state.status.isSubmissionInProgress && state.status.isValidated
+                  ? () {
+                      context.read<CourseFormBloc>().add(
+                            CourseFormUpdateSubmitted(
+                              courseId: courseId,
+                              token: token,
+                            ),
+                          );
+                    }
+                  : null,
+          child: state.status.isSubmissionInProgress
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                  ),
+                )
+              : const Text('Save'),
+        );
+      },
     );
   }
 }
