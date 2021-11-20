@@ -76,6 +76,7 @@ class _AppViewState extends State<AppView> {
         RegisterInstructor.routeName: (context) => const RegisterInstructor(),
         InstructorDetails.routeName: (context) => const InstructorDetails(),
         UpdateInstructor.routeName: (context) => const UpdateInstructor(),
+        CourseListPage.routeName: (context) => const CourseListPage(),
       },
       onGenerateRoute: (_) => SplashPage.route(),
     );
