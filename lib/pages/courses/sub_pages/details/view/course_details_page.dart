@@ -94,6 +94,7 @@ class _DetailsWidget extends StatelessWidget {
                 'Name',
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
               ),
+              const SizedBox(height: 4),
               Text(
                 course.name,
                 style: TextStyle(color: Colors.grey[700]),
