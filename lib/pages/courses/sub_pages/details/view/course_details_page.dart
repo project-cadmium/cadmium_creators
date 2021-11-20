@@ -58,10 +58,11 @@ class CourseDetailsPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Card(
           child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: _DetailsWidget(
-                course: course,
-              )),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: _DetailsWidget(
+              course: course,
+            ),
+          ),
         ),
       ),
     );
@@ -76,24 +77,48 @@ class _DetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Course ${course.id}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
-        const SizedBox(height: 4),
-        const Divider(
-          thickness: 0.5,
-          height: 3,
-          color: Colors.black54,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              const Text(
+                'Name',
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+              ),
+              Text(
+                course.name,
+                style: TextStyle(color: Colors.grey[700]),
+              ),
+              const SizedBox(height: 10),
+              const Divider(
+                thickness: 0.5,
+                height: 3,
+                color: Colors.black54,
+              ),
+              const SizedBox(height: 7),
+              const Text(
+                'Description',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                course.description,
+                style: TextStyle(color: Colors.grey[700]),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 4),
-        const Text(
-          'Names',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        const SizedBox(height: 15),
+        ElevatedButton(onPressed: () {}, child: const Text('Edit')),
       ],
     );
   }
