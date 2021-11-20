@@ -10,7 +10,7 @@ class CourseRepository {
       {required int instructorId, required String token}) async {
     final response = await http.get(
       Uri.parse(
-          'http://localhost:8000/api/v1/courses/?instructor_id=$instructorId'),
+          'http://localhost:8000/api/v1/courses/?ordering=name&instructor_id=$instructorId'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: 'Token $token',
       },
