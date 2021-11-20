@@ -6,6 +6,7 @@ class CourseDetailsPage extends StatelessWidget {
 
   static const routeName = '/courseDetails';
 
+  // TODO: Fetch data using bloc to allow refreshing after editing
   @override
   Widget build(BuildContext context) {
     final course = ModalRoute.of(context)!.settings.arguments as Course;
@@ -53,7 +54,47 @@ class CourseDetailsPage extends StatelessWidget {
           ],
         ),
       ),
-      body: const Text('Some body'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Card(
+          child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: _DetailsWidget(
+                course: course,
+              )),
+        ),
+      ),
+    );
+  }
+}
+
+class _DetailsWidget extends StatelessWidget {
+  const _DetailsWidget({Key? key, required this.course}) : super(key: key);
+
+  final Course course;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Course ${course.id}',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 4),
+        const Divider(
+          thickness: 0.5,
+          height: 3,
+          color: Colors.black54,
+        ),
+        const SizedBox(height: 4),
+        const Text(
+          'Names',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }
