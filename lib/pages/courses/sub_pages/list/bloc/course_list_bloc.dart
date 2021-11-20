@@ -18,14 +18,14 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
 
   void _onInitialEvent(
       GetCourseListInitial event, Emitter<CourseListState> emit) async {
-    debugPrint("_onInitialEvent fired");
+    debugPrint("CourseListBloc._onInitialEvent fired: ${event.instructorId}");
     try {
       final List<Course>? courses = await _courseRepository.getCourses(
           instructorId: event.instructorId, token: event.token);
-      debugPrint("_onInitialEvent $courses");
+      debugPrint("CourseListBloc._onInitialEvent $courses");
       add(GetCourseListSuccessful(courses!));
     } catch (e) {
-      debugPrint("_onInitialEvent: ${e.toString()}");
+      debugPrint("CourseListBloc._onInitialEvent: ${e.toString()}");
       add(const GetCourseListUnsuccessful());
     }
   }

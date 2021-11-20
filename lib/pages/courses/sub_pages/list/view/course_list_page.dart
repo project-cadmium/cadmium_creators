@@ -1,7 +1,9 @@
 import 'package:cadmium_creators/authentication/authentication.dart';
 import 'package:cadmium_creators/components/components.dart';
+import 'package:cadmium_creators/pages/courses/sub_pages/list/bloc/course_list_bloc.dart';
 import 'package:cadmium_creators/pages/instructor/repository/repository.dart';
 import 'package:cadmium_creators/pages/instructor/views/details/bloc/get_bloc.dart';
+import 'package:cadmium_creators/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -45,13 +47,8 @@ class CourseListPage extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: SizedBox(
-                width: double.infinity,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.blue,
-                ),
-              ),
+                  width: double.infinity,
+                  child: _courselistBlocProvider(state.instructor, token)),
             );
           } else {
             return const Center(
@@ -61,5 +58,36 @@ class CourseListPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _courselistBlocProvider(Instructor instructor, String token) {
+    return BlocProvider(
+        create: (context) {
+          return CourseListBloc(courseRepository: CourseRepository())
+            ..add(GetCourseListInitial(
+                instructorId: instructor.id, token: token));
+        },
+        child: BlocBuilder<CourseListBloc, CourseListState>(
+          buildWhen: (previous, current) => previous.courses != current.courses,
+          builder: (context, state) {
+            if (state.status == CourseListGetStatus.success) {
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.blue,
+                  ),
+                ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(color: Colors.green),
+              );
+            }
+          },
+        ));
   }
 }

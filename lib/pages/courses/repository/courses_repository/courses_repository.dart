@@ -17,12 +17,21 @@ class CourseRepository {
     );
     if (response.statusCode == 200) {
       debugPrint("getCourses ${response.body}");
-      final List<String> courseStringList = jsonDecode(response.body);
+      final List<dynamic> courseMapList = jsonDecode(response.body);
+      debugPrint("getCourses $courseMapList");
       List<Course> courseList = [];
-      for (String instructor in courseStringList) {
-        courseList.add(Course.fromJson(jsonDecode(instructor)));
+      for (Map<String, dynamic> course in courseMapList) {
+        courseList.add(Course(
+          id: course['id'],
+          instructorId: course['instructor_id'],
+          name: course['name'],
+          description: course['description'],
+          createdAt: course['created_at'],
+          updatedAt: course['updated_at'],
+        ));
       }
       debugPrint("getCourses $courseList");
+      return courseList;
     } else {
       throw Exception("${response.statusCode} ${response.body} ");
     }
