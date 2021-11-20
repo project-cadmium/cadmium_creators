@@ -71,13 +71,10 @@ class CourseListPage extends StatelessWidget {
         buildWhen: (previous, current) => previous.courses != current.courses,
         builder: (context, state) {
           if (state.status == CourseListGetStatus.success) {
-            return Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: _CourseListView(
-                  courses: state.courses,
-                ),
+            return SizedBox(
+              width: double.infinity,
+              child: _CourseListView(
+                courses: state.courses,
               ),
             );
           } else {
@@ -101,8 +98,23 @@ class _CourseListView extends StatelessWidget {
     return ListView.builder(
       itemCount: courses.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(courses[index].name),
+        Course course = courses[index];
+        return Card(
+          child: ListTile(
+            title: Text(course.name),
+            // neat trick from stackoverflow
+            // https://stackoverflow.com/a/60929451/7450617
+            subtitle: Text(course.description.length < 45
+                ? course.description
+                : course.description
+                    .replaceRange(45, course.description.length, '...')),
+            trailing: IconButton(
+              iconSize: 20,
+              splashRadius: 20,
+              icon: const Icon(Icons.arrow_forward_ios_rounded),
+              onPressed: () {},
+            ),
+          ),
         );
       },
     );
