@@ -16,7 +16,7 @@ class CourseRepository {
       },
     );
     if (response.statusCode == 200) {
-      debugPrint("getCourses ${response.body}");
+      // debugPrint("getCourses ${response.body}");
       final List<dynamic> courseMapList = jsonDecode(response.body);
 
       List<Course> courseList = [];

@@ -100,6 +100,10 @@ class _CourseListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String token = context.select(
+      (AuthenticationBloc bloc) => bloc.state.authKey.key,
+    );
+
     return ListView.builder(
       itemCount: courses.length,
       itemBuilder: (context, index) {
@@ -129,7 +133,10 @@ class _CourseListView extends StatelessWidget {
                     context,
                     CourseDetailsPage.routeName,
                     arguments: course,
-                  );
+                  ).then((value) {
+                    context.read<CourseListBloc>().add(GetCourseListRefresh(
+                        instructorId: course.instructorId, token: token));
+                  });
                 },
               ),
             ),
