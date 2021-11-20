@@ -57,7 +57,7 @@ class CourseFormBloc extends Bloc<CourseFormEvent, CourseFormState> {
       try {
         await _courseRepository.updateCourse(
           courseId: event.courseId,
-          instructorId: event.courseId,
+          instructorId: event.instructorId,
           name: state.courseName.value,
           description: state.courseDescription.value,
           token: event.token,

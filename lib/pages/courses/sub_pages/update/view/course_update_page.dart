@@ -96,7 +96,7 @@ class _CourseUpdateForm extends StatelessWidget {
         const SizedBox(height: 10),
         _DescriptionInput(description: course.description),
         const SizedBox(height: 10),
-        _SubmitButton(courseId: course.id),
+        _SubmitButton(course: course),
       ],
     );
   }
@@ -182,8 +182,8 @@ class _DescriptionInputState extends State<_DescriptionInput> {
 }
 
 class _SubmitButton extends StatelessWidget {
-  const _SubmitButton({Key? key, required this.courseId}) : super(key: key);
-  final int courseId;
+  const _SubmitButton({Key? key, required this.course}) : super(key: key);
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +206,8 @@ class _SubmitButton extends StatelessWidget {
                   ? () {
                       context.read<CourseFormBloc>().add(
                             CourseFormUpdateSubmitted(
-                              courseId: courseId,
+                              courseId: course.id,
+                              instructorId: course.instructorId,
                               token: token,
                             ),
                           );
